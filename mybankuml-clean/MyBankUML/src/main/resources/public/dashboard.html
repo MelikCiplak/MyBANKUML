@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBankUML - Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MyBankUML Dashboard</h1>
+            <div class="user-info">
+                <span id="welcomeMessage"></span>
+                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            </div>
+        </header>
+
+        <div id="customerView" class="view" style="display: none;">
+            <h2>My Accounts</h2>
+            <div id="accountsList"></div>
+            
+            <h2>Make a Transaction</h2>
+            <form id="transactionForm">
+                <div class="form-group">
+                    <label for="txType">Transaction Type:</label>
+                    <select id="txType" required>
+                        <option value="DEPOSIT">Deposit</option>
+                        <option value="WITHDRAWAL">Withdrawal</option>
+                        <option value="TRANSFER">Transfer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sourceAccount">Source Account:</label>
+                    <select id="sourceAccount" required></select>
+                </div>
+                <div class="form-group" id="targetAccountGroup" style="display: none;">
+                    <label for="targetAccount">Target Account:</label>
+                    <input type="text" id="targetAccount">
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" step="0.01" min="0.01" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Transaction</button>
+                <div id="txMessage" class="message"></div>
+            </form>
+        </div>
+
+        <div id="tellerView" class="view" style="display: none;">
+            <h2>Teller Functions</h2>
+            <p>Search for customers and perform transactions on their behalf.</p>
+            
+            <div class="search-section">
+                <h3>Search Users</h3>
+                <form id="searchForm">
+                    <div class="form-group">
+                        <label for="searchQuery">Search by Name or ID:</label>
+                        <input type="text" id="searchQuery" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+                <div id="searchResults"></div>
+            </div>
+        </div>
+
+        <div id="adminView" class="view" style="display: none;">
+            <h2>Administrator Functions</h2>
+            
+            <div class="admin-section">
+                <h3>Create New User</h3>
+                <form id="createUserForm">
+                    <div class="form-group">
+                        <label for="newUsername">Username:</label>
+                        <input type="text" id="newUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">Password:</label>
+                        <input type="password" id="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newRole">Role:</label>
+                        <select id="newRole" required>
+                            <option value="CUSTOMER">Customer</option>
+                            <option value="TELLER">Teller</option>
+                            <option value="ADMINISTRATOR">Administrator</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="newName">Full Name:</label>
+                        <input type="text" id="newName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newEmail">Email:</label>
+                        <input type="email" id="newEmail" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                    <div id="createUserMessage" class="message"></div>
+                </form>
+            </div>
+
+            <div class="admin-section">
+                <h3>Search & Manage Users</h3>
+                <form id="adminSearchForm">
+                    <div class="form-group">
+                        <label for="adminSearchQuery">Search Users:</label>
+                        <input type="text" id="adminSearchQuery" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+                <div id="adminSearchResults"></div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/api.js"></script>
+    <script>
+        // Dashboard JavaScript will be loaded inline for now
+        const api = new BankAPI();
+        let currentUser = null;
+
+        // Check if user is logged in
+        window.addEventListener('DOMContentLoaded', async () => {
+            currentUser = api.getCurrentUser();
+            if (!currentUser) {
+                window.location.href = '/index.html';
+                return;
+            }
+
+            document.getElementById('welcomeMessage').textContent = 
+                `Welcome, ${currentUser.name} (${currentUser.role})`;
+
+            // Show appropriate view based on role
+            if (currentUser.role === 'CUSTOMER') {
+                document.getElementById('customerView').style.display = 'block';
+                await loadAccounts();
+            } else if (currentUser.role === 'TELLER') {
+                document.getElementById('tellerView').style.display = 'block';
+            } else if (currentUser.role === 'ADMINISTRATOR') {
+                document.getElementById('adminView').style.display = 'block';
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await api.logout();
+            window.location.href = '/index.html';
+        });
+
+        // Load customer accounts
+        async function loadAccounts() {
+            const accountsList = document.getElementById('accountsList');
+            const sourceSelect = document.getElementById('sourceAccount');
+            
+            // This would need to be implemented via API
+            accountsList.innerHTML = '<p>Account loading would be implemented via API</p>';
+            sourceSelect.innerHTML = '<option value="">Select Account</option>';
+        }
+
+        // Transaction form
+        document.getElementById('txType')?.addEventListener('change', (e) => {
+            const targetGroup = document.getElementById('targetAccountGroup');
+            targetGroup.style.display = e.target.value === 'TRANSFER' ? 'block' : 'none';
+        });
+
+        document.getElementById('transactionForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const txMessage = document.getElementById('txMessage');
+            
+            try {
+                const data = {
+                    type: document.getElementById('txType').value,
+                    sourceAccountNumber: document.getElementById('sourceAccount').value,
+                    targetAccountNumber: document.getElementById('targetAccount').value || null,
+                    amount: parseFloat(document.getElementById('amount').value)
+                };
+
+                const result = await api.makeTransaction(data);
+                txMessage.textContent = 'Transaction successful!';
+                txMessage.className = 'message success';
+                e.target.reset();
+            } catch (error) {
+                txMessage.textContent = error.message;
+                txMessage.className = 'message error';
+            }
+        });
+
+        // Create user form (admin)
+        document.getElementById('createUserForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = document.getElementById('createUserMessage');
+            
+            try {
+                const userData = {
+                    username: document.getElementById('newUsername').value,
+                    password: document.getElementById('newPassword').value,
+                    role: document.getElementById('newRole').value,
+                    name: document.getElementById('newName').value,
+                    email: document.getElementById('newEmail').value
+                };
+
+                await api.createUser(userData);
+                message.textContent = 'User created successfully!';
+                message.className = 'message success';
+                e.target.reset();
+            } catch (error) {
+                message.textContent = error.message;
+                message.className = 'message error';
+            }
+        });
+
+        // Search forms
+        document.getElementById('searchForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = document.getElementById('searchQuery').value;
+            const results = document.getElementById('searchResults');
+            
+            try {
+                const users = await api.searchUsers(query);
+                results.innerHTML = users.map(u => 
+                    `<div class="search-result">${u.name} (${u.userID})</div>`
+                ).join('');
+            } catch (error) {
+                results.innerHTML = `<p class="error">${error.message}</p>`;
+            }
+        });
+
+        document.getElementById('adminSearchForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = document.getElementById('adminSearchQuery').value;
+            const results = document.getElementById('adminSearchResults');
+            
+            try {
+                const users = await api.searchUsers(query);
+                results.innerHTML = users.map(u => 
+                    `<div class="search-result">${u.name} (${u.userID}) - ${u.role}</div>`
+                ).join('');
+            } catch (error) {
+                results.innerHTML = `<p class="error">${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+[
+  {
+    "accountNumber": "A001",
+    "ownerUserID": "U003",
+    "type": "CHECKING",
+    "balance": 12458.32,
+    "creationDate": "2024-01-15T10:00:00"
+  },
+  {
+    "accountNumber": "A002",
+    "ownerUserID": "U003",
+    "type": "SAVINGS",
+    "balance": 37349.77,
+    "creationDate": "2024-02-20T14:30:00"
+  },
+  {
+    "accountNumber": "A003",
+    "ownerUserID": "U002",
+    "type": "CHECKING",
+    "balance": 500.00,
+    "creationDate": "2024-03-01T09:00:00"
+  }
+]

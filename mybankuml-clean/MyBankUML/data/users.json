@@ -1,0 +1,31 @@
+[ {
+  "userID" : "U001",
+  "username" : "admin",
+  "passwordHash" : "$2a$10$6VYRr9iO36q6vp0SLOUJDucXog8lbtpHTxYV7RzXeHG9I.gCQ0PbC",
+  "fullName" : "System Administrator",
+  "role" : "ADMIN",
+  "status" : "ACTIVE",
+  "failedLoginAttempts" : 0,
+  "twoFactorEnabled" : false,
+  "dashboardRoute" : "/dashboard"
+}, {
+  "userID" : "U003",
+  "username" : "customer",
+  "passwordHash" : "$2a$10$6VYRr9iO36q6vp0SLOUJDucXog8lbtpHTxYV7RzXeHG9I.gCQ0PbC",
+  "fullName" : "John Doe",
+  "role" : "CUSTOMER",
+  "status" : "ACTIVE",
+  "failedLoginAttempts" : 0,
+  "twoFactorEnabled" : false,
+  "dashboardRoute" : "/dashboard"
+}, {
+  "userID" : "U002",
+  "username" : "teller",
+  "passwordHash" : "$2a$10$6VYRr9iO36q6vp0SLOUJDucXog8lbtpHTxYV7RzXeHG9I.gCQ0PbC",
+  "fullName" : "Branch Teller",
+  "role" : "TELLER",
+  "status" : "ACTIVE",
+  "failedLoginAttempts" : 0,
+  "twoFactorEnabled" : false,
+  "dashboardRoute" : "/dashboard"
+} ]

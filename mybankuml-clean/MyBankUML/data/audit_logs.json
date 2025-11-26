@@ -1,0 +1,16 @@
+[
+  {
+    "logID": "LOG001",
+    "adminID": "U001",
+    "action": "CREATE_USER",
+    "targetUserID": "U002",
+    "timestamp": "2024-01-10T08:30:00"
+  },
+  {
+    "logID": "LOG002",
+    "adminID": "U001",
+    "action": "CREATE_USER",
+    "targetUserID": "U003",
+    "timestamp": "2024-01-12T09:15:00"
+  }
+]

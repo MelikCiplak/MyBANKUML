@@ -1,0 +1,26 @@
+[
+  {
+    "transactionID": "T001",
+    "sourceAccountNumber": "A001",
+    "targetAccountNumber": null,
+    "amount": 1000.00,
+    "type": "DEPOSIT",
+    "timestamp": "2024-01-15T10:30:00"
+  },
+  {
+    "transactionID": "T002",
+    "sourceAccountNumber": "A002",
+    "targetAccountNumber": null,
+    "amount": 5000.00,
+    "type": "DEPOSIT",
+    "timestamp": "2024-02-20T15:00:00"
+  },
+  {
+    "transactionID": "T003",
+    "sourceAccountNumber": "A001",
+    "targetAccountNumber": "A002",
+    "amount": 500.00,
+    "type": "TRANSFER",
+    "timestamp": "2024-03-01T09:30:00"
+  }
+]
