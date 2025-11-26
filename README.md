@@ -1,2 +1,0 @@
-# MyBANKUML
-BankUML application
